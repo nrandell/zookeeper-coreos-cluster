@@ -1,6 +1,5 @@
 #! /bin/sh
 
-env
 ZOOKEEPER_DIR=/opt/zookeeper-3.4.6
 cp $ZOOKEEPER_DIR/conf/zoo.cfg.template $ZOOKEEPER_DIR/conf/zoo.cfg
 OIFS=$IFS
