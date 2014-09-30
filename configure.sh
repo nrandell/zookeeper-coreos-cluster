@@ -2,7 +2,7 @@
 
 if [ $# -ne 1 ]
 then
-  echo "usage: start <number of servers>"
+  echo "usage: configure <number of servers>"
   exit -1
 fi
 
