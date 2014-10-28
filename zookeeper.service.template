@@ -5,14 +5,15 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
-ExecStartPre=-/usr/bin/docker kill nrandell/zookeeper-centos
-ExecStartPre=-/usr/bin/docker rm nrandell/zookeeper-centos
+ExecStartPre=-/usr/bin/mkdir -p /var/zookeeper
+ExecStartPre=/usr/bin/chattr -R +C /var/zookeeper
+ExecStartPre=-/usr/bin/docker kill zookeeper-%i
+ExecStartPre=-/usr/bin/docker rm zookeeper-%i
 ExecStartPre=/usr/bin/docker pull nrandell/zookeeper-centos
 ExecStart=/usr/bin/docker run \
 	--rm \
 	--name zookeeper-%i \
 	--env ZK_SERVER_NUMBER=%i \
-	--hostname zookeeper-%i \
 	--env ZK_SERVERS=#ZK_SERVERS# \
 	--publish 2181:2181 \
 	--publish 2888:2888 \
@@ -23,4 +24,6 @@ ExecStart=/usr/bin/docker run \
 ExecStop=/usr/bin/docker stop zookeeper-%i
 
 [X-Fleet]
-MachineID=#MACHINE_ID#
+Conflicts=zookeeper*
+MachineMetadata=id=%i
+MachineMetadata=use=infrastructure
